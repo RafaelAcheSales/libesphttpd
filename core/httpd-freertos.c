@@ -12,7 +12,7 @@ Thanks to my collague at Espressif for writing the foundations of this code.
 /* Copyright 2017 Jeroen Domburg <git@j0h.nl> */
 /* Copyright 2017 Chris Morgan <chmorgan@gmail.com> */
 
-#if defined(linux) || defined(FREERTOS)
+#if defined(linux) || defined(FREERTOS) || 1
 
 #ifdef linux
 #include <libesphttpd/linux.h>
@@ -232,6 +232,16 @@ void platHttpServerTaskInit(ServerTaskContext *ctx, HttpdFreertosInstance *pInst
 
     int idxConnection = 0;
     for (idxConnection=0; idxConnection < ctx->pInstance->httpdInstance.maxConnections; idxConnection++) {
+        if (ctx == NULL) {
+            printf("%s:%d ctx is NULL\n", __FUNCTION__, __LINE__);
+        }
+        if (ctx->pInstance == NULL) {
+            printf("%s:%d pInstance is NULL\n", __FUNCTION__, __LINE__);
+        }
+        if (ctx->pInstance->rconn == NULL) {
+            printf("%s:%d rconn is NULL\n", __FUNCTION__, __LINE__);
+        }
+        printf("%s:%d ctx->pInstance->rconn[%d].fd = %d\n", __FUNCTION__, __LINE__, idxConnection, ctx->pInstance->rconn[idxConnection].fd);
         ctx->pInstance->rconn[idxConnection].fd=-1;
     }
 

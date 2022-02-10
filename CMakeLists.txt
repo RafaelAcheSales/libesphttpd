@@ -18,7 +18,7 @@ set (libesphttpd_PRIV_INCLUDE_DIRS "core"
 
 if (CONFIG_ESPHTTPD_USE_ESPFS)
     list (APPEND libesphttpd_SOURCES "core/httpd-espfs.c")
-    list (APPEND libesphttpd_PRIV_INCLUDE_DIRS "../espfs/include")
+    list (APPEND libesphttpd_PRIV_INCLUDE_DIRS "../espfs//include")
 endif (CONFIG_ESPHTTPD_USE_ESPFS)
 
 idf_component_register(

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "esp_timer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,6 +57,7 @@ extern "C" {
 
 //Max length of CORS token. This amount is allocated per connection.
 #define MAX_CORS_TOKEN_LEN 256
+
 
 typedef enum
 {
@@ -118,6 +120,8 @@ struct HttpdPriv {
 	int sendBacklogSize;
 #endif
 	int flags;
+	esp_timer_handle_t timer;
+
 };
 
 //A struct describing the POST data sent inside the http connection.  This is used by the CGI functions
@@ -146,6 +150,7 @@ struct HttpdConnData {
 	cgiRecvHandler recvHdl;	// Handler for data received after headers, if any
 	HttpdPostData post;	// POST data structure
 	bool isConnectionClosed;
+	int timeout;
 };
 
 //A struct describing an url. This is the main struct that's used to send different URL requests to

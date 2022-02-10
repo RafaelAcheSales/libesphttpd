@@ -84,9 +84,9 @@ typedef struct {
     char serverStr[20];
     struct timeval *selectTimeoutData;
     HttpdFreertosInstance *pInstance;
-    int32 listenFd;
-    int32 udpListenFd;
-    int32 remoteFd;
+    int32_t listenFd;
+    int32_t udpListenFd;
+    int32_t remoteFd;
 } ServerTaskContext;
 
 /**

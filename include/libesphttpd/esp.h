@@ -1,11 +1,11 @@
 // Combined include file for esp8266 and esp32
-
-#ifdef ESP_PLATFORM //only set in esp-idf
 #define FREERTOS 1
 #define ESP32 1
+#undef linux
+#ifdef ESP_PLATFORM //only set in esp-idf
 
 #include "sdkconfig.h"
-#define HTTPD_STACKSIZE CONFIG_ESPHTTPD_STACK_SIZE
+#define HTTPD_STACKSIZE 4096
 #include "stdint.h"
 typedef uint8_t uint8;
 typedef uint16_t uint16;

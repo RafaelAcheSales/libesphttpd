@@ -544,6 +544,22 @@ CallbackStatus ICACHE_FLASH_ATTR httpdContinue(HttpdInstance *pInstance, HttpdCo
             {
                 httpdCgiIsDone(pInstance, conn);
             }
+            if (r == HTTPD_CGI_MORE) {
+                /* Wait to complete request */
+                if (conn->timeout) {
+                    // os_timer_setfn(&conn->priv->timer,
+                    //                 (os_timer_func_t *)httpdContinue, conn);
+                    // os_timer_arm(&conn->priv->timer, conn->timeout, FALSE);
+                    esp_timer_create_args_t timer_args = {
+                        .callback = &httpdContinue,
+                        .arg = conn,
+                        .name = "httpdContinue"
+                    };
+                    esp_timer_create(&timer_args, &conn->priv.timer);
+                    httpdPlatUnlock(pInstance);
+                    return;
+                }
+            }
 
             httpdFlushSendBuffer(pInstance, conn);
         }
