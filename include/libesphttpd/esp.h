@@ -5,7 +5,7 @@
 #ifdef ESP_PLATFORM //only set in esp-idf
 
 #include "sdkconfig.h"
-#define HTTPD_STACKSIZE 4096
+#define HTTPD_STACKSIZE CONFIG_ESPHTTPD_STACK_SIZE
 #include "stdint.h"
 typedef uint8_t uint8;
 typedef uint16_t uint16;

@@ -88,7 +88,7 @@ typedef struct HttpdPriv HttpdPriv;
 typedef struct HttpdConnData HttpdConnData;
 typedef struct HttpdPostData HttpdPostData;
 typedef struct HttpdInstance HttpdInstance;
-
+typedef struct HttpdFullArg HttpdFullArg;
 
 typedef CgiStatus (* cgiSendCallback)(HttpdConnData *connData);
 typedef CgiStatus (* cgiRecvHandler)(HttpdInstance *pInstance, HttpdConnData *connData, char *data, int len);
@@ -100,6 +100,10 @@ struct HttpSendBacklogItem {
 	char data[];
 };
 #endif
+struct HttpdFullArg {
+	HttpdConnData *connData;
+	HttpdInstance *pInstance;
+};
 
 //Private data for http connection
 struct HttpdPriv {
@@ -151,6 +155,7 @@ struct HttpdConnData {
 	HttpdPostData post;	// POST data structure
 	bool isConnectionClosed;
 	int timeout;
+	uint8_t remote_ip[4];		// IP address of client
 };
 
 //A struct describing an url. This is the main struct that's used to send different URL requests to
@@ -229,7 +234,7 @@ int httpdSend(HttpdConnData *conn, const char *data, int len);
 int httpdSend_js(HttpdConnData *conn, const char *data, int len);
 int httpdSend_html(HttpdConnData *conn, const char *data, int len);
 void httpdFlushSendBuffer(HttpdInstance *pInstance, HttpdConnData *conn);
-CallbackStatus httpdContinue(HttpdInstance *pInstance, HttpdConnData *conn);
+CallbackStatus httpdContinue(HttpdFullArg *arg);
 CallbackStatus httpdConnSendStart(HttpdInstance *pInstance, HttpdConnData *conn);
 void httpdConnSendFinish(HttpdInstance *pInstance, HttpdConnData *conn);
 void httpdAddCacheHeaders(HttpdConnData *connData, const char *mime);
