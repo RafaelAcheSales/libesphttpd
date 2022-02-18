@@ -99,14 +99,14 @@ typedef struct __attribute__ ((packed)) {
 
 
 //Function to put unaligned 16-bit network values
-static void ICACHE_FLASH_ATTR setn16(void *pp, int16_t n) {
+static void  setn16(void *pp, int16_t n) {
 	char *p=pp;
 	*p++=(n>>8);
 	*p++=(n&0xff);
 }
 
 //Function to put unaligned 32-bit network values
-static void ICACHE_FLASH_ATTR setn32(void *pp, int32_t n) {
+static void  setn32(void *pp, int32_t n) {
 	char *p=pp;
 	*p++=(n>>24)&0xff;
 	*p++=(n>>16)&0xff;
@@ -116,7 +116,7 @@ static void ICACHE_FLASH_ATTR setn32(void *pp, int32_t n) {
 
 //Parses a label into a C-string containing a dotted
 //Returns pointer to start of next fields in packet
-static char* ICACHE_FLASH_ATTR labelToStr(char *packet, char *labelPtr, int packetSz, char *res, int resMaxLen) {
+static char*  labelToStr(char *packet, char *labelPtr, int packetSz, char *res, int resMaxLen) {
 	int i, j, k;
 	char *endPtr=NULL;
 	i=0;
@@ -148,7 +148,7 @@ static char* ICACHE_FLASH_ATTR labelToStr(char *packet, char *labelPtr, int pack
 
 
 //Converts a dotted hostname to the weird label form dns uses.
-static char ICACHE_FLASH_ATTR *strToLabel(char *str, char *label, int maxLen) {
+static char  *strToLabel(char *str, char *label, int maxLen) {
 	char *len=label; //ptr to len byte
 	char *p=label+1; //ptr to next label byte to be written
 	while (1) {
@@ -173,10 +173,10 @@ static char buff[DNS_LEN];
 static char reply[DNS_LEN];
 
 #ifndef FREERTOS
-static void ICACHE_FLASH_ATTR captdnsRecv(void* arg, char *pusrdata, unsigned short length) {
+static void  captdnsRecv(void* arg, char *pusrdata, unsigned short length) {
 	struct espconn *conn=(struct espconn *)arg;
 #else
-static void ICACHE_FLASH_ATTR captdnsRecv(struct sockaddr_in *premote_addr, char *pusrdata, unsigned short length) {
+static void  captdnsRecv(struct sockaddr_in *premote_addr, char *pusrdata, unsigned short length) {
 #endif
 	int i;
 	char *rend=&reply[length];
@@ -352,7 +352,7 @@ void captdnsInit(void) {
 
 #else
 
-void ICACHE_FLASH_ATTR captdnsInit(void) {
+void  captdnsInit(void) {
 	static struct espconn conn;
 	static esp_udp udpconn;
 	conn.type=ESPCONN_UDP;

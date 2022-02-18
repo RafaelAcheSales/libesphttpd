@@ -46,7 +46,7 @@ Thanks to my collague at Espressif for writing the foundations of this code.
 const static char* TAG = "httpd-freertos";
 
 
-int ICACHE_FLASH_ATTR httpdPlatSendData(HttpdInstance *pInstance, HttpdConnData *pConn, char *buff, int len) {
+int  httpdPlatSendData(HttpdInstance *pInstance, HttpdConnData *pConn, char *buff, int len) {
     int bytesWritten;
 #ifdef CONFIG_ESPHTTPD_SSL_SUPPORT
     HttpdFreertosInstance *pFR = fr_of_instance(pInstance);
@@ -65,7 +65,7 @@ int ICACHE_FLASH_ATTR httpdPlatSendData(HttpdInstance *pInstance, HttpdConnData 
     return bytesWritten;
 }
 
-void ICACHE_FLASH_ATTR httpdPlatDisconnect(HttpdConnData *pConn) {
+void  httpdPlatDisconnect(HttpdConnData *pConn) {
     RtosConnType *pRconn = frconn_of_conn(pConn);
     pRconn->needsClose=1;
     pRconn->needWriteDoneNotif=1; //because the real close is done in the writable select code
@@ -77,23 +77,23 @@ void httpdPlatDisableTimeout(HttpdConnData *pConn) {
 
 #ifdef linux
 //Set/clear global httpd lock.
-void ICACHE_FLASH_ATTR httpdPlatLock(HttpdInstance *pInstance) {
+void  httpdPlatLock(HttpdInstance *pInstance) {
     HttpdFreertosInstance *pFR = fr_of_instance(pInstance);
     pthread_mutex_lock(&pFR->httpdMux);
 }
 
-void ICACHE_FLASH_ATTR httpdPlatUnlock(HttpdInstance *pInstance) {
+void  httpdPlatUnlock(HttpdInstance *pInstance) {
     HttpdFreertosInstance *pFR = fr_of_instance(pInstance);
     pthread_mutex_unlock(&pFR->httpdMux);
 }
 #else
 //Set/clear global httpd lock.
-void ICACHE_FLASH_ATTR httpdPlatLock(HttpdInstance *pInstance) {
+void  httpdPlatLock(HttpdInstance *pInstance) {
     HttpdFreertosInstance *pFR = fr_of_instance(pInstance);
     xSemaphoreTakeRecursive(pFR->httpdMux, portMAX_DELAY);
 }
 
-void ICACHE_FLASH_ATTR httpdPlatUnlock(HttpdInstance *pInstance) {
+void  httpdPlatUnlock(HttpdInstance *pInstance) {
     HttpdFreertosInstance *pFR = fr_of_instance(pInstance);
     xSemaphoreGiveRecursive(pFR->httpdMux);
 }
@@ -689,7 +689,7 @@ void httpdPlatTimerDelete(HttpdPlatTimerHandle timer) {
 #endif
 
 //Httpd initialization routine. Call this to kick off webserver functionality.
-HttpdInitStatus ICACHE_FLASH_ATTR httpdFreertosInitEx(HttpdFreertosInstance *pInstance,
+HttpdInitStatus  httpdFreertosInitEx(HttpdFreertosInstance *pInstance,
     const HttpdBuiltInUrl *fixedUrls, int port,
     uint32_t listenAddress,
     void* connectionBuffer, int maxConnections,
@@ -717,7 +717,7 @@ HttpdInitStatus ICACHE_FLASH_ATTR httpdFreertosInitEx(HttpdFreertosInstance *pIn
     return status;
 }
 
-HttpdInitStatus ICACHE_FLASH_ATTR httpdFreertosInit(HttpdFreertosInstance *pInstance,
+HttpdInitStatus  httpdFreertosInit(HttpdFreertosInstance *pInstance,
     const HttpdBuiltInUrl *fixedUrls, int port,
     void* connectionBuffer, int maxConnections,
     HttpdFlags flags)
@@ -732,7 +732,7 @@ HttpdInitStatus ICACHE_FLASH_ATTR httpdFreertosInit(HttpdFreertosInstance *pInst
     return status;
 }
 
-SslInitStatus ICACHE_FLASH_ATTR httpdFreertosSslInit(HttpdFreertosInstance *pInstance)
+SslInitStatus  httpdFreertosSslInit(HttpdFreertosInstance *pInstance)
 {
     SslInitStatus status = SslInitSuccess;
 
@@ -751,7 +751,7 @@ SslInitStatus ICACHE_FLASH_ATTR httpdFreertosSslInit(HttpdFreertosInstance *pIns
     return status;
 }
 
-void ICACHE_FLASH_ATTR httpdFreertosSslSetCertificateAndKey(HttpdFreertosInstance *pInstance,
+void  httpdFreertosSslSetCertificateAndKey(HttpdFreertosInstance *pInstance,
                                         const void *certificate, size_t certificate_size,
                                         const void *private_key, size_t private_key_size)
 {
@@ -776,7 +776,7 @@ void ICACHE_FLASH_ATTR httpdFreertosSslSetCertificateAndKey(HttpdFreertosInstanc
 #endif
 }
 
-void ICACHE_FLASH_ATTR httpdFreertosSslSetClientValidation(HttpdFreertosInstance *pInstance,
+void  httpdFreertosSslSetClientValidation(HttpdFreertosInstance *pInstance,
                                          SslClientVerifySetting verifySetting)
 {
 #ifdef CONFIG_ESPHTTPD_SSL_SUPPORT
@@ -808,7 +808,7 @@ void ICACHE_FLASH_ATTR httpdFreertosSslSetClientValidation(HttpdFreertosInstance
 #endif
 }
 
-void ICACHE_FLASH_ATTR httpdFreertosSslAddClientCertificate(HttpdFreertosInstance *pInstance,
+void  httpdFreertosSslAddClientCertificate(HttpdFreertosInstance *pInstance,
                                           const void *certificate, size_t certificate_size)
 {
 #ifdef CONFIG_ESPHTTPD_SSL_SUPPORT
@@ -821,7 +821,7 @@ void ICACHE_FLASH_ATTR httpdFreertosSslAddClientCertificate(HttpdFreertosInstanc
 #endif
 }
 
-HttpdStartStatus ICACHE_FLASH_ATTR httpdFreertosStart(HttpdFreertosInstance *pInstance)
+HttpdStartStatus  httpdFreertosStart(HttpdFreertosInstance *pInstance)
 {
 #ifdef CONFIG_ESPHTTPD_SSL_SUPPORT
     if((pInstance->httpdFlags & HTTPD_FLAG_SSL) && !pInstance->ctx)

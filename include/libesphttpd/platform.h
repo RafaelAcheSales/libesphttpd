@@ -50,7 +50,7 @@ typedef struct
 
 typedef HttpdPlatTimer* HttpdPlatTimerHandle;
 
-#define ICACHE_FLASH_ATTR
+#define 
 #define ICACHE_RODATA_ATTR
 
 #else // no-os, map to os-specific versions that have to be defined

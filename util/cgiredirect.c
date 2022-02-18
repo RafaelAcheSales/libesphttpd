@@ -7,7 +7,7 @@ const static char* TAG = "cgiredirect";
 
 
 //Use this as a cgi function to redirect one url to another.
-CgiStatus ICACHE_FLASH_ATTR cgiRedirect(HttpdConnData *connData) {
+CgiStatus  cgiRedirect(HttpdConnData *connData) {
 	if (connData->isConnectionClosed) {
 		//Connection aborted. Clean up.
 		return HTTPD_CGI_DONE;
@@ -16,7 +16,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiRedirect(HttpdConnData *connData) {
 	return HTTPD_CGI_DONE;
 }
 
-CgiStatus ICACHE_FLASH_ATTR cgiRedirectToHostname(HttpdConnData *connData) {
+CgiStatus  cgiRedirectToHostname(HttpdConnData *connData) {
 	static const char hostFmt[]="http://%s/";
 	char *buff;
 	int isIP=0;
@@ -69,7 +69,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiRedirectToHostname(HttpdConnData *connData) {
 //Same as above, but will only redirect clients with an IP that is in the range of
 //the SoftAP interface. This should preclude clients connected to the STA interface
 //to be redirected to nowhere.
-CgiStatus ICACHE_FLASH_ATTR cgiRedirectApClientToHostname(HttpdConnData *connData) {
+CgiStatus  cgiRedirectApClientToHostname(HttpdConnData *connData) {
 #ifdef linux
 	return HTTPD_CGI_NOTFOUND;
 #else

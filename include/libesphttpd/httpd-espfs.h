@@ -22,7 +22,7 @@ typedef CgiStatus (* TplCallback)(HttpdConnData *connData, char *token, void **a
 
 void httpdRegisterEspfs(EspFs *fs);
 CgiStatus cgiEspFsHook(HttpdConnData *connData);
-CgiStatus ICACHE_FLASH_ATTR cgiEspFsTemplate(HttpdConnData *connData);
+CgiStatus  cgiEspFsTemplate(HttpdConnData *connData);
 
 /**
  * @return 1 upon success, 0 upon failure

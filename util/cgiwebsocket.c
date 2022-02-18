@@ -89,7 +89,7 @@ struct WebsockPriv {
 
 static Websock *llStart=NULL;
 
-static int ICACHE_FLASH_ATTR sendFrameHead(Websock *ws, int opcode, int len) {
+static int  sendFrameHead(Websock *ws, int opcode, int len) {
 	char buf[14];
 	int i=0;
 	buf[i++]=opcode;
@@ -111,7 +111,7 @@ static int ICACHE_FLASH_ATTR sendFrameHead(Websock *ws, int opcode, int len) {
 	return httpdSend(ws->conn, buf, i);
 }
 
-int ICACHE_FLASH_ATTR cgiWebsocketSend(HttpdInstance *pInstance, Websock *ws, const char *data, int len, int flags) {
+int  cgiWebsocketSend(HttpdInstance *pInstance, Websock *ws, const char *data, int len, int flags) {
 	int r=0;
 	int fl=0;
 
@@ -139,7 +139,7 @@ int ICACHE_FLASH_ATTR cgiWebsocketSend(HttpdInstance *pInstance, Websock *ws, co
 }
 
 //Broadcast data to all websockets at a specific url. Returns the amount of connections sent to.
-int ICACHE_FLASH_ATTR cgiWebsockBroadcast(HttpdInstance *pInstance, const char *resource, char *data, int len, int flags) {
+int  cgiWebsockBroadcast(HttpdInstance *pInstance, const char *resource, char *data, int len, int flags) {
 	Websock *lw=llStart;
 	int ret=0;
 	while (lw!=NULL) {
@@ -155,7 +155,7 @@ int ICACHE_FLASH_ATTR cgiWebsockBroadcast(HttpdInstance *pInstance, const char *
 }
 
 
-void ICACHE_FLASH_ATTR cgiWebsocketClose(HttpdInstance *pInstance, Websock *ws, int reason) {
+void  cgiWebsocketClose(HttpdInstance *pInstance, Websock *ws, int reason) {
 	char rs[2]={reason>>8, reason&0xff};
 	httpdPlatLock(pInstance);
 	sendFrameHead(ws, FLAG_FIN|OPCODE_CLOSE, 2);
@@ -166,7 +166,7 @@ void ICACHE_FLASH_ATTR cgiWebsocketClose(HttpdInstance *pInstance, Websock *ws, 
 }
 
 
-static void ICACHE_FLASH_ATTR websockFree(Websock *ws) {
+static void  websockFree(Websock *ws) {
 	ESP_LOGD(TAG, "");
 	if (ws->closeCb) ws->closeCb(ws);
 	//Clean up linked list
@@ -181,7 +181,7 @@ static void ICACHE_FLASH_ATTR websockFree(Websock *ws) {
 	if (ws->priv) free(ws->priv);
 }
 
-CgiStatus ICACHE_FLASH_ATTR cgiWebSocketRecv(HttpdInstance *pInstance, HttpdConnData *connData, char *data, int len) {
+CgiStatus  cgiWebSocketRecv(HttpdInstance *pInstance, HttpdConnData *connData, char *data, int len) {
 	int i, j, sl;
 	int r=HTTPD_CGI_MORE;
 	int wasHeaderByte;
@@ -294,7 +294,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiWebSocketRecv(HttpdInstance *pInstance, HttpdConn
 }
 
 //Websocket 'cgi' implementation
-CgiStatus ICACHE_FLASH_ATTR cgiWebsocket(HttpdConnData *connData) {
+CgiStatus  cgiWebsocket(HttpdConnData *connData) {
 	char buff[256];
 	int i;
 	sha1nfo s;

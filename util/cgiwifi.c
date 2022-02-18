@@ -49,7 +49,7 @@ static os_timer_t resetTimer;
 
 //Callback the code calls when a wlan ap scan is done. Basically stores the result in
 //the cgiWifiAps struct.
-void ICACHE_FLASH_ATTR wifiScanDoneCb(void *arg, STATUS status) {
+void  wifiScanDoneCb(void *arg, STATUS status) {
 	int n;
 	struct bss_info *bss_link = (struct bss_info *)arg;
 	httpd_printf("wifiScanDoneCb %d\n", status);
@@ -110,7 +110,7 @@ void ICACHE_FLASH_ATTR wifiScanDoneCb(void *arg, STATUS status) {
 }
 
 //Routine to start a WiFi access point scan.
-static void ICACHE_FLASH_ATTR wifiStartScan() {
+static void  wifiStartScan() {
 	if (cgiWifiAps.scanInProgress) return;
 	cgiWifiAps.scanInProgress=1;
 	wifi_station_scan(NULL, wifiScanDoneCb);
@@ -119,7 +119,7 @@ static void ICACHE_FLASH_ATTR wifiStartScan() {
 //This CGI is called from the bit of AJAX-code in wifi.tpl. It will initiate a
 //scan for access points and if available will return the result of an earlier scan.
 //The result is embedded in a bit of JSON parsed by the javascript in wifi.tpl.
-CgiStatus ICACHE_FLASH_ATTR cgiWiFiScan(HttpdConnData *connData) {
+CgiStatus  cgiWiFiScan(HttpdConnData *connData) {
 	int pos=(int)connData->cgiData;
 	int len;
 	char buff[1024];
@@ -169,7 +169,7 @@ static struct station_config stconf;
 
 //This routine is ran some time after a connection attempt to an access point. If
 //the connect succeeds, this gets the module in STA-only mode.
-static void ICACHE_FLASH_ATTR resetTimerCb(void *arg) {
+static void  resetTimerCb(void *arg) {
 	int x=wifi_station_get_connect_status();
 	if (x==STATION_GOT_IP) {
 		//Go to STA mode. This needs a reset, so do that.
@@ -188,7 +188,7 @@ static void ICACHE_FLASH_ATTR resetTimerCb(void *arg) {
 //Actually connect to a station. This routine is timed because I had problems
 //with immediate connections earlier. It probably was something else that caused it,
 //but I can't be arsed to put the code back :P
-static void ICACHE_FLASH_ATTR reassTimerCb(void *arg) {
+static void  reassTimerCb(void *arg) {
 	int x;
 	httpd_printf("Try to connect to AP....\n");
 	wifi_station_disconnect();
@@ -206,7 +206,7 @@ static void ICACHE_FLASH_ATTR reassTimerCb(void *arg) {
 
 //This cgi uses the routines above to connect to a specific access point with the
 //given ESSID using the given password.
-CgiStatus ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
+CgiStatus  cgiWiFiConnect(HttpdConnData *connData) {
 	char essid[128];
 	char passwd[128];
 	static os_timer_t reassTimer;
@@ -237,7 +237,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiWiFiConnect(HttpdConnData *connData) {
 
 //This cgi uses the routines above to connect to a specific access point with the
 //given ESSID using the given password.
-CgiStatus ICACHE_FLASH_ATTR cgiWiFiSetMode(HttpdConnData *connData) {
+CgiStatus  cgiWiFiSetMode(HttpdConnData *connData) {
 	int len;
 	char buff[1024];
 
@@ -258,7 +258,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiWiFiSetMode(HttpdConnData *connData) {
 }
 
 //Set wifi channel for AP mode
-CgiStatus ICACHE_FLASH_ATTR cgiWiFiSetChannel(HttpdConnData *connData) {
+CgiStatus  cgiWiFiSetChannel(HttpdConnData *connData) {
 
 	int len;
 	char buff[64];
@@ -285,7 +285,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiWiFiSetChannel(HttpdConnData *connData) {
 	return HTTPD_CGI_DONE;
 }
 
-CgiStatus ICACHE_FLASH_ATTR cgiWiFiConnStatus(HttpdConnData *connData) {
+CgiStatus  cgiWiFiConnStatus(HttpdConnData *connData) {
 	char buff[1024];
 	int len;
 	struct ip_info info;
@@ -317,7 +317,7 @@ CgiStatus ICACHE_FLASH_ATTR cgiWiFiConnStatus(HttpdConnData *connData) {
 }
 
 //Template code for the WLAN page.
-CgiStatus ICACHE_FLASH_ATTR tplWlan(HttpdConnData *connData, char *token, void **arg) {
+CgiStatus  tplWlan(HttpdConnData *connData, char *token, void **arg) {
 	char buff[1024];
 	if (token==NULL) return HTTPD_CGI_DONE;
 	int x;

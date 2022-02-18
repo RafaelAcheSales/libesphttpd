@@ -102,7 +102,7 @@ EspFsFile *tryOpenIndex(const char *path) {
 	return NULL; // failed to guess the right name
 }
 
-CgiStatus ICACHE_FLASH_ATTR
+CgiStatus 
 serveStaticFile(HttpdConnData *connData, const char* filepath) {
 	EspFsFile *file=connData->cgiData;
 	int len;
@@ -265,7 +265,7 @@ static size_t getFilepath(HttpdConnData *connData, char *filepath, size_t len)
 //This is a catch-all cgi function. It takes the url passed to it, looks up the corresponding
 //path in the filesystem and if it exists, passes the file through. This simulates what a normal
 //webserver would do with static files.
-CgiStatus ICACHE_FLASH_ATTR cgiEspFsHook(HttpdConnData *connData) {
+CgiStatus  cgiEspFsHook(HttpdConnData *connData) {
 	if (connData->cgiData) {
 		return serveStaticFile(connData, NULL);
 	}
@@ -301,7 +301,7 @@ typedef struct {
 	TplEncode tokEncode;
 } TplData;
 
-int ICACHE_FLASH_ATTR
+int 
 tplSend(HttpdConnData *conn, const char *str, int len)
 {
         if (conn == NULL) return 0;
@@ -313,7 +313,7 @@ tplSend(HttpdConnData *conn, const char *str, int len)
         return 0;
 }
 
-CgiStatus ICACHE_FLASH_ATTR cgiEspFsTemplate(HttpdConnData *connData) {
+CgiStatus  cgiEspFsTemplate(HttpdConnData *connData) {
 	TplData *tpd=connData->cgiData;
 	int len;
 	int x, sp=0;
